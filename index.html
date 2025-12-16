@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>晟自然地科實驗室　月相盈虧 (V25)</title>
+    <title>晟自然地科實驗室　月相盈虧 (V26)</title>
     <style>
         :root {
             --space-bg: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
@@ -293,11 +293,14 @@
         /* V24/V25 資訊網格與標籤對齊系統 */
         .info-grid {
             display: grid; grid-template-columns: 1fr 1fr; 
-            gap: 4px; /* V25: 縮小 Gap 讓右欄稍微左移，減少疏離感 */
+            gap: 4px; 
         }
+        
+        /* V26 Update: 統一資訊格與說明欄的字體、行高與顏色 */
         .info-item { 
             font-size: 0.95rem; color: #444; 
             display: flex; align-items: center; 
+            line-height: 1.5; /* 統一設定行高 */
         }
         
         /* 標籤：固定寬度以確保冒號對齊，並強制不換行 */
@@ -307,21 +310,21 @@
             white-space: nowrap;
             color: #555;
             font-weight: bold;
-            margin-right: 5px; /* V25: 增加右側間距，解決文字緊貼冒號的問題 */
+            margin-right: 5px; 
         }
         
         .highlight { color: #c0392b; font-weight: bold; }
         .blue-high { color: #2980b9; font-weight: bold; }
         
-        /* 說明區塊：懸掛縮排與防跳動 */
+        /* V26 Update: 說明區塊完全對齊上方樣式 */
         .desc-wrapper {
             margin-top: 5px; 
-            font-size: 0.9rem; 
-            color: #666;
+            font-size: 0.95rem; /* V26: 調整為與 info-item 一致 (原 0.9rem) */
+            color: #444;        /* V26: 調整為與 info-item 一致 (原 #666) */
             min-height: 2.8em; 
-            line-height: 1.3;
+            line-height: 1.5;   /* V26: 調整為與 info-item 一致 (原 1.3) */
             display: flex; 
-            align-items: flex-start; /* 頂部對齊 */
+            align-items: flex-start; /* 保持頂部對齊以適應多行文字 */
         }
         
         /* --- 控制區 --- */
@@ -386,7 +389,7 @@
             100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
         }
 
-        /* --- V23/V24/V25 Mobile Optimization --- */
+        /* --- V23/V24/V25/V26 Mobile Optimization --- */
         @media (max-width: 620px) {
             /* 1. 還原電腦版比例，縮小尺寸 (120:130 -> 96:104) */
             .view-from-earth { width: 96px; height: 104px; }
@@ -411,6 +414,12 @@
             .info-item { 
                 font-size: 13px; 
             }
+            
+            /* V26 Update: 說明文字同步縮小，確保手機版對齊 */
+            .desc-wrapper {
+                font-size: 13px;
+            }
+
             /* V24/V25: 手機版標籤寬度 */
             .label { width: 6.2em; }
             
