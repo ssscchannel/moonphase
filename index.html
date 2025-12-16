@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>晟自然地科實驗室　月相盈虧 (V23)</title>
+    <title>晟自然地科實驗室　月相盈虧 (V24)</title>
     <style>
         :root {
             --space-bg: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
@@ -279,34 +279,46 @@
         .phase-name { font-size: 1.4rem; font-weight: 900; color: #8e44ad; }
         
         .phenomenon-badge {
-            background: #e74c3c; color: white; padding: 3px 6px; border-radius: 4px;
-            font-size: 0.8rem; font-weight: bold;
+            background: #e74c3c; color: white; padding: 1px 4px; border-radius: 4px;
+            font-size: 0.8rem; font-weight: bold; margin-left: 2px; white-space: nowrap;
         }
         .tide-badge {
-            background: #2980b9; color: white; padding: 3px 6px; border-radius: 4px;
-            font-size: 0.8rem; font-weight: bold;
+            background: #2980b9; color: white; padding: 1px 4px; border-radius: 4px;
+            font-size: 0.8rem; font-weight: bold; margin-left: 2px; white-space: nowrap;
         }
 
+        /* V24 資訊網格與標籤對齊系統 */
         .info-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
         }
-        .info-item { font-size: 0.95rem; color: #444; display: flex; align-items: center; }
-        .highlight { color: #c0392b; font-weight: bold; margin-left: 5px; }
-        .blue-high { color: #2980b9; font-weight: bold; margin-left: 5px; }
+        .info-item { 
+            font-size: 0.95rem; color: #444; 
+            display: flex; align-items: center; 
+        }
         
-        /* 說明區塊：V23 增加最小高度防止跳動 */
+        /* 標籤：固定寬度以確保冒號對齊，並強制不換行 */
+        .label {
+            display: inline-block;
+            width: 7em; /* PC預設寬度 */
+            white-space: nowrap;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .highlight { color: #c0392b; font-weight: bold; }
+        .blue-high { color: #2980b9; font-weight: bold; }
+        
+        /* 說明區塊：懸掛縮排與防跳動 */
         .desc-wrapper {
             margin-top: 5px; 
             font-size: 0.9rem; 
             color: #666;
-            min-height: 2.4em; /* 保留兩行高度 (1.2em * 2) */
-            line-height: 1.2;
+            min-height: 2.8em; /* V24: 增加至 2.8em 確保兩行高度，防止按鈕跳動 */
+            line-height: 1.3;
             display: flex; 
-            align-items: flex-start;
+            align-items: flex-start; /* 頂部對齊 */
         }
-        /* V23 Update: 說明Label對齊 */
-        .desc-label { min-width: 75px; font-weight: normal; } 
-
+        
         /* --- 控制區 --- */
         .controls { 
             width: 100%; max-width: 600px;
@@ -369,23 +381,25 @@
             100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
         }
 
-        /* --- V23 Mobile Optimization --- */
+        /* --- V23/V24 Mobile Optimization --- */
         @media (max-width: 620px) {
             /* 1. 還原電腦版比例，縮小尺寸 (120:130 -> 96:104) */
             .view-from-earth { width: 96px; height: 104px; }
             .view-horizon { width: 96px; height: 104px; }
-            .moon-phase-render { width: 52px; height: 52px; } /* 按比例縮小 */
+            .moon-phase-render { width: 52px; height: 52px; } 
             
             .dir-tag { font-size: 12px; }
             
-            /* 2. 資訊格保持兩欄，但縮小字體與間距，確保同行顯示 */
+            /* 2. 資訊格保持兩欄，縮小字體與間距，確保同行顯示 */
             .info-grid { 
-                grid-template-columns: 1fr 1fr; /* 強制兩欄 */
+                grid-template-columns: 1fr 1fr; 
                 gap: 2px; 
             }
             .info-item { 
-                font-size: 0.85rem; /* 縮小字體以防折行 */
+                font-size: 13px; /* V24: 微調字體大小以容納標籤 */
             }
+            /* V24: 手機版標籤寬度縮減，但保持對齊 */
+            .label { width: 6.2em; }
             
             h1 { font-size: 1.1rem; }
             .title-logo { height: 28px; }
@@ -481,14 +495,28 @@
                 <span class="phase-name" id="phaseName">新月 (朔)</span>
             </div>
         </div>
+        
         <div class="info-grid">
-            <div class="info-item">🌅 月出時刻：<span class="highlight" id="moonRiseTime">06:00</span></div>
-            <div class="info-item">🌄 月落時刻：<span class="highlight" id="moonSetTime">18:00</span></div>
-            <div class="info-item">🌓 明暗狀況：<span class="blue-high" id="brightnessInfo">全暗</span></div>
-            <div class="info-item">🌟 特殊現象：<span id="phenomenonDisplay" style="margin-left:5px">無</span></div>
+            <div class="info-item">
+                <span class="label">🌅 月出時刻：</span>
+                <span class="highlight" id="moonRiseTime">06:00</span>
+            </div>
+            <div class="info-item">
+                <span class="label">🌄 月落時刻：</span>
+                <span class="highlight" id="moonSetTime">18:00</span>
+            </div>
+            <div class="info-item">
+                <span class="label">🌓 明暗狀況：</span>
+                <span class="blue-high" id="brightnessInfo">全暗</span>
+            </div>
+            <div class="info-item">
+                <span class="label">🌟 特殊現象：</span>
+                <span id="phenomenonDisplay">無</span>
+            </div>
         </div>
+        
         <div class="desc-wrapper">
-            <span class="desc-label">💡 說　　明：</span>
+            <span class="label">💡 說　　明：</span>
             <span id="descText">月球位於地球與太陽中間，背光面向地球。</span>
         </div>
     </div>
@@ -619,7 +647,6 @@
 
                 dayAnim = setInterval(() => {
                     // V22 Update: 12 seconds per cycle
-                    // 30 days / 0.1 step = 300 steps. 12000ms / 300 = 40ms
                     currentVal += 0.1;
                     if (currentVal > 30.5) currentVal = 1;
                     updateSim('autoDay', currentVal);
@@ -641,7 +668,6 @@
 
                 timeAnim = setInterval(() => {
                     // V22 Update: 12 seconds per cycle
-                    // 24 hours / 0.06 step = 400 steps. 12000ms / 400 = 30ms
                     currentVal += 0.06;
                     if (currentVal >= 24) currentVal = 0;
                     
@@ -664,7 +690,6 @@
                 document.getElementById('timeSlider').value = timeHour;
             }
             
-            // 顯示文字日期
             document.getElementById('dayVal').innerText = Math.floor(lunarDay);
             document.getElementById('timeVal').innerText = formatTime(timeHour);
 
@@ -685,13 +710,13 @@
             const finalStickRot = 90 - obsRot; 
             document.getElementById('observerContainer').style.transform = `translate(-50%, -50%) rotate(${finalStickRot}deg)`;
 
-            // 3. 右下角視窗 (Horizon)
+            // 3. 右下角視窗
             if (mode !== 'autoDay') {
                 const earthRotationAngle = (timeHour - 12) * 15;
                 updateHorizonView(moonAngle, earthRotationAngle, lunarDay);
             }
 
-            // 4. 左下角視窗 (Phase) & Info
+            // 4. 資訊與月相
             updateInfoPanel(lunarDay, moonAngle, timeHour);
             
             if (mode !== 'autoTime') {
@@ -703,19 +728,12 @@
             if(mode === 'manual') { 
                 let dInt = Math.floor(lunarDay);
                 
-                // 初一
                 if(Math.abs(lunarDay - 1) < 2) 
                     document.querySelectorAll('.btn')[0].classList.add('active');
-                
-                // 上弦
                 else if(dInt === 7 || dInt === 8) 
                     document.querySelectorAll('.btn')[1].classList.add('active');
-                
-                // 滿月
                 else if(dInt === 15 || dInt === 16) 
                     document.querySelectorAll('.btn')[2].classList.add('active');
-                
-                // 下弦
                 else if(dInt === 22 || dInt === 23) 
                     document.querySelectorAll('.btn')[3].classList.add('active');
             }
@@ -757,7 +775,7 @@
 
             let dayInt = Math.floor(day);
 
-            // 明暗狀況邏輯
+            // 明暗狀況
             if (dayInt >= 29 || dayInt <= 1) {
                 brightDesc = "全暗";
             } 
@@ -771,53 +789,33 @@
                 brightDesc = "西暗東亮";
             }
 
-            // Phase Name & Visibility Logic
-            
+            // 月相名稱與描述
             if (day >= 29.5) {
-                phase = "晦月"; 
-                tide = "大潮";
-                showTitle = true; 
-                rise = 6; set = 18;
+                phase = "晦月"; tide = "大潮"; showTitle = true; rise = 6; set = 18;
                 desc = "月球週期的最後一天，看不見月亮。";
             } 
             else if (dayInt <= 1) { 
-                phase = "新月 (朔)";
-                tide = "大潮";
+                phase = "新月 (朔)"; tide = "大潮"; 
                 if (Math.abs(day - 1) < 1.5) eclipse = "可能日食";
-                showTitle = true;
-
-                rise = 6; set = 18;
+                showTitle = true; rise = 6; set = 18;
                 desc = "月球位於地球與太陽中間，背光面向地球。 班別：早班月亮";
             } 
             else if (dayInt === 7 || dayInt === 8) { 
-                phase = "上弦月";
-                tide = "小潮";
-                showTitle = true;
-
-                rise = 12; set = 24;
+                phase = "上弦月"; tide = "小潮"; showTitle = true; rise = 12; set = 24;
                 desc = "中午升起，午夜落下。 班別：午班月亮";
             } 
             else if (dayInt === 15 || dayInt === 16) { 
-                phase = "滿月 (望)";
-                tide = "大潮";
+                phase = "滿月 (望)"; tide = "大潮";
                 if (Math.abs(day - 15) < 1.5) eclipse = "可能月食";
-                showTitle = true;
-
-                rise = 18; set = 6;
+                showTitle = true; rise = 18; set = 6;
                 desc = "太陽西落，月球東昇，整夜可見。 班別：晚班月亮";
             } 
             else if (dayInt === 22 || dayInt === 23) { 
-                phase = "下弦月";
-                tide = "小潮";
-                showTitle = true;
-
-                rise = 0; set = 12;
+                phase = "下弦月"; tide = "小潮"; showTitle = true; rise = 0; set = 12;
                 desc = "午夜升起，中午落下。 班別：大夜班月亮";
             } 
             else {
-                // 過渡期
                 showTitle = false; 
-                
                 if (day < 7) {
                     phase = "眉月"; tide = "中潮"; rise = 9; set = 21; desc = "傍晚見於西方低空。";
                 } else if (day < 15) {
@@ -829,8 +827,7 @@
                 }
             }
 
-            // Render Logic
-
+            // 渲染
             let dayStr = "";
             const daysMap = ["", "初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", 
                              "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
@@ -838,7 +835,6 @@
             if (dayInt <= 30) dayStr = daysMap[dayInt] || "";
             document.getElementById('dateDisplay').innerText = `農曆 ${dayStr}`;
 
-            // Phase Title
             const phaseNameEl = document.getElementById('phaseName');
             if (showTitle) {
                 phaseNameEl.innerText = phase;
@@ -848,7 +844,6 @@
                 phaseNameEl.style.display = 'none';
             }
 
-            // Phenomenon & Tide
             const phenomEl = document.getElementById('phenomenonDisplay');
             if (showTitle) {
                  let content = "";
@@ -861,7 +856,6 @@
                  phenomEl.innerText = "無";
             }
 
-            // Detailed Info
             const buttonDates = [1, 7, 8, 15, 16, 22, 23];
             const showTimes = buttonDates.includes(dayInt);
 
