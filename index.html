@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>晟自然地科實驗室　月相盈虧 (V26)</title>
+    <title>晟自然地科實驗室　月相盈虧 (V26.1)</title>
     <style>
         :root {
             --space-bg: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
@@ -772,11 +772,20 @@
                 moonElem.style.display = 'block';
                 const rad = delta * (Math.PI / 180);
                 
+                // xPos: +Delta is East (Left), -Delta is West (Right)
+                // Sin(90)=1 -> 50-42=8 (Left). Sin(-90)=-1 -> 50+42=92 (Right). Correct.
                 const xPos = 50 - (Math.sin(rad) * 42); 
                 const yPos = 100 - (Math.cos(rad) * 75); 
                 
                 moonElem.style.left = `${xPos}%`;
                 moonElem.style.top = `${yPos}%`;
+                
+                // --- V26.1 Fix: Correct Field Rotation (場旋轉修正) ---
+                // 使用 -delta 進行反向補償，以符合地平座標的視覺投影
+                // 上弦月(右亮)東升: Delta +90 -> Rotate -90 -> 亮面朝上(小船)
+                // 上弦月(右亮)西落: Delta -90 -> Rotate +90 -> 亮面朝下(拱門)
+                moonElem.style.transform = `translate(-50%, -50%) rotate(${-delta}deg)`;
+
             } else {
                 moonElem.style.display = 'none';
             }
