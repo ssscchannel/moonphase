@@ -41,6 +41,35 @@
         .title-logo { height: 32px; width: auto; }
         h1 { margin: 0; color: #2c3e50; font-size: 1.2rem; text-align: center; white-space: nowrap; }
 
+        /* --- 新增：外部連結按鈕 (移植自 index.html) --- */
+        .external-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px; 
+            text-decoration: none;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: #fff;
+            padding: 6px 18px; 
+            font-size: 0.9rem; 
+            border-radius: 50px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.4);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.2);
+            z-index: 100; /* 確保按鈕在最上層 */
+        }
+        .external-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(52, 152, 219, 0.6);
+            background: linear-gradient(135deg, #2980b9 0%, #2c3e50 100%);
+        }
+        .external-link-btn:active {
+            transform: scale(0.98);
+        }
+
         /* --- 主模擬視窗 --- */
         #simWrapper {
             position: relative;
@@ -439,6 +468,10 @@
         <img src="logo.jpg" alt="Logo" class="title-logo" onerror="this.style.display='none'">
         <h1>晟自然輔助系統　月相盈虧</h1>
     </div>
+
+    <a href="https://line.me/ti/g2/TTCqPpZP6lQqX1z_AUDPNm4977Dvylew3O7oBg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" class="external-link-btn">
+        <span>👉</span> 加 LINE 免費提問
+    </a>
 
     <div id="simWrapper">
         <div class="simulation-container" id="simContainer">
