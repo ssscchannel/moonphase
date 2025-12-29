@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>晟自然地科實驗室　月相盈虧 (V26.1)</title>
+    <title>晟自然輔助系統　月相盈虧</title>
     <style>
         :root {
             --space-bg: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
@@ -28,18 +28,77 @@
             color: var(--text-color);
         }
 
-        /* --- 標題區 --- */
-        .header-container { 
-            display: flex; align-items: center; justify-content: center;   
-            gap: 10px; margin-top: 5px; margin-bottom: 10px;
-            background-color: var(--panel-bg);
-            padding: 8px 20px; border-radius: 50px;
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
-            max-width: 600px; width: 95%; 
-            z-index: 100;
+        /* --- 標題區 (手機版緊湊化) --- */
+        .header-container {
+            flex-shrink: 0; /* 禁止被壓縮 */
+            width: 97%;     /* 稍微留邊 */
+			box-sizing: border-box; /* 確保 padding 不會讓它變更寬 */
+            max-width: 800px;
+            
+            /* 讓標題在左，按鈕在右 */
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            
+            /* 視覺美化 */
+            padding: 8px 15px;
+            margin-top: 5px;
+			margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.9); /* 90% 不透明度 */
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 立體陰影 */
+            z-index: 1000;
         }
-        .title-logo { height: 32px; width: auto; }
-        h1 { margin: 0; color: #2c3e50; font-size: 1.2rem; text-align: center; white-space: nowrap; }
+		
+        .title-logo {
+            height: 36px; /* 限制高度，避免撐開 */
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-container h1 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.3;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Logo 與文字間距 */
+        }
+		
+		/* =========================================
+           3. 右上角按鈕群 (新功能)
+           ========================================= */
+        .nav-buttons {
+            display: flex;
+            gap: 8px; /* 按鈕之間的間距 */
+        }
+		
+		/* 精緻化的 LINE 按鈕 (膠囊狀) */
+        .header-btn {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            background: #06c755; /* LINE 的官方綠色 */
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 20px; /* 圓角膠囊 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.1s, background 0.2s;
+            white-space: nowrap; /* 禁止文字換行 */
+        }
+		
+		.header-btn:active {
+            transform: scale(0.95);
+        }
+
+        .header-btn span {
+            margin-right: 4px; /* 圖示與文字距離 */
+        }
 
         /* --- 新增：外部連結按鈕 (移植自 index.html) --- */
         .external-link-btn {
@@ -50,16 +109,19 @@
             text-decoration: none;
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             color: #fff;
+            
+            /* 樣式保持一致 */
             padding: 6px 18px; 
             font-size: 0.9rem; 
+            
             border-radius: 50px;
             font-weight: bold;
-            margin-bottom: 20px;
+            /* 微調：針對此檔案較緊湊的佈局，將原 margin-bottom: 20px 微調為 10px */
+            margin-bottom: 10px;
             box-shadow: 0 3px 8px rgba(52, 152, 219, 0.4);
             transition: all 0.2s ease;
             cursor: pointer;
             border: 2px solid rgba(255,255,255,0.2);
-            z-index: 100; /* 確保按鈕在最上層 */
         }
         .external-link-btn:hover {
             transform: translateY(-2px);
@@ -418,60 +480,35 @@
             100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
         }
 
-        /* --- V23/V24/V25/V26 Mobile Optimization --- */
-        @media (max-width: 620px) {
-            /* 1. 還原電腦版比例，縮小尺寸 (120:130 -> 96:104) */
-            .view-from-earth { width: 96px; height: 104px; }
-            .view-horizon { width: 96px; height: 104px; }
-            .moon-phase-render { width: 52px; height: 52px; } 
-            
-            /* V25: 允許手機版標題折行，並縮小行距以美觀呈現 */
-            .view-title { 
-                font-size: 10px; 
-                white-space: normal; 
-                line-height: 1.1; 
-                height: auto;
-            }
-            
-            .dir-tag { font-size: 12px; }
-            
-            /* 2. 資訊格保持兩欄，縮小字體與間距，確保同行顯示 */
-            .info-grid { 
-                grid-template-columns: 1fr 1fr; 
-                gap: 2px; 
-            }
-            .info-item { 
-                font-size: 13px; 
-            }
-            
-            /* V26 Update: 說明文字同步縮小，確保手機版對齊 */
-            .desc-wrapper {
-                font-size: 13px;
-            }
-
-            /* V24/V25: 手機版標籤寬度 */
-            .label { width: 6.2em; }
-            
-            h1 { font-size: 1.1rem; }
-            .title-logo { height: 28px; }
-            .horizon-stage { height: 60px; }
-            .horizon-moon { width: 18px; height: 18px; }
-            
-            .btn { white-space: normal; font-size: 0.8rem; }
+		/* RWD: 手機直式時，標題過長自動換行 */
+        .mobile-break { display: none; }
+        
+        @media (max-width: 600px) {
+            .mobile-break { display: block; height: 0; }
+            .header-container h1 { font-size: 1rem; }
+            .header-btn { padding: 5px 10px; font-size: 0.85rem; }
+            .header-btn span { display: none; } /* 手機版太窄時，隱藏手指圖示 */
         }
 
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <img src="logo.jpg" alt="Logo" class="title-logo" onerror="this.style.display='none'">
-        <h1>晟自然輔助系統　月相盈虧</h1>
-    </div>
+	<div class="header-container">
+        <h1>
+            <img src="logo.jpg" alt="Logo" class="title-logo" onerror="this.style.display='none'">
+            <div>
+                晟自然輔助系統　<span class="mobile-break"></span>月相盈虧
+            </div>
+        </h1>
 
-    <a href="https://line.me/ti/g2/TTCqPpZP6lQqX1z_AUDPNm4977Dvylew3O7oBg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" class="external-link-btn">
-        <span>👉</span> 加 LINE 免費提問
-    </a>
+        <div class="nav-buttons">
+            <a href="https://line.me/ti/g2/TTCqPpZP6lQqX1z_AUDPNm4977Dvylew3O7oBg" target="_blank" class="header-btn" title="加入官方LINE">
+                <span>👉</span>加 LINE 提問
+            </a>
+            
+            </div>
+    </div>
 
     <div id="simWrapper">
         <div class="simulation-container" id="simContainer">
